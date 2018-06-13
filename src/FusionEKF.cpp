@@ -42,8 +42,8 @@ FusionEKF::FusionEKF() {
 		0, 1, 0, 0;
 
   // Set the process and measurement noises
-  noise_ax = 9;
-  noise_ay = 9;
+  float noise_ax = 9;
+  float noise_ay = 9;
 }
 
 /**
