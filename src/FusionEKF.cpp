@@ -41,10 +41,6 @@ FusionEKF::FusionEKF() {
   H_laser_ << 1, 0, 0, 0,
 		0, 1, 0, 0;
 
-  // Set the process and measurement noises
-  float noise_ax = 9;
-  float noise_ay = 9;
-}
 
 /**
 * Destructor.
@@ -102,6 +98,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   float dt_2 = dt * dt;
   float dt_3 = dt_2 * dt;
   float dt_4 = dt_3 * dt;
+
+  // Set the process and measurement noises
+  float noise_ax = 9;
+  float noise_ay = 9;
 
   // Modify the F matrix so that the time is integrated
   ekf_.F_ << 1, 0, dt, 0,
