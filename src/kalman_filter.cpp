@@ -1,4 +1,5 @@
 #include "kalman_filter.h"
+#include "tools.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -49,13 +50,15 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	float vx = x_(2); // Velocity x
 	float vy = x_(3); // Velocity y
 
-	VectorXd h = VectorDx(3);
+	VectorXd h = VectorXd(3);
 	h << sqrt(px*px + py*py),
 		atan2(py, px), // source: http://en.cppreference.com/w/cpp/numeric/math/atan2
 		(px*vx + py*vy) / sqrt(px*px + py*py);
 	
+	Tools *t = new Tools();
+
 	VectorXd y = z - h;
-	MatrixXd Ht = CalculateJacobian(&z)
+	MatrixXd Ht = t->CalculateJacobian(z);
 	MatrixXd S = H_ * P_ * Ht + R_;
 	MatrixXd Si = S.inverse();
 	MatrixXd PHt = P_ * Ht;
@@ -66,4 +69,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	long x_size = x_.size();
 	MatrixXd I = MatrixXd::Identity(x_size, x_size);
 	P_ = (I - K * H_) * P_;
+
+	delete t;
 }
