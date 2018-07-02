@@ -52,7 +52,7 @@ int main()
         auto j = json::parse(s);
 
         std::string event = j[0].get<std::string>();
-        
+        std::cout<<"1"<<std::endl; // DELETE ###############################
         if (event == "telemetry") {
           // j[1] is the data JSON object
           
@@ -109,8 +109,7 @@ int main()
     	  fusionEKF.ProcessMeasurement(meas_package);    	  
 
     	  //Push the current estimated x,y positon from the Kalman filter's state vector
-
-    	  VectorXd estimate(4);
+	  VectorXd estimate(4);
 
     	  double p_x = fusionEKF.ekf_.x_(0);
     	  double p_y = fusionEKF.ekf_.x_(1);
@@ -123,7 +122,7 @@ int main()
     	  estimate(3) = v2;
     	  
     	  estimations.push_back(estimate);
-
+        
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
           json msgJson;
