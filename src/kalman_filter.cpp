@@ -55,10 +55,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 		atan2(py, px), // source: http://en.cppreference.com/w/cpp/numeric/math/atan2
 		(px*vx + py*vy) / sqrt(px*px + py*py);
 	
-	Tools *t = new Tools();
-
 	VectorXd y = z - h;
-	MatrixXd Ht = t->CalculateJacobian(z);
+	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
 	MatrixXd Si = S.inverse();
 	MatrixXd PHt = P_ * Ht;
@@ -70,5 +68,4 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	MatrixXd I = MatrixXd::Identity(x_size, x_size);
 	P_ = (I - K * H_) * P_;
 
-	delete t;
 }
