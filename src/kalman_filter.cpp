@@ -56,6 +56,16 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 		(px*vx + py*vy) / sqrt(px*px + py*py);
 	
 	VectorXd y = z - h;
+
+	// normalize theta in y
+	while (y(1) < -M_PI) { // source: https://stackoverflow.com/questions/1727881/how-to-use-the-pi-constant-in-c
+		y(1) += 2*M_PI;
+	}
+
+	while (y(1) > M_PI) {
+		y(1) -= 2*M_PI;
+	}
+ 
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
 	MatrixXd Si = S.inverse();
