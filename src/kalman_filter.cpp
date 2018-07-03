@@ -59,6 +59,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	VectorXd y = z - h;
 
 	// normalize theta in y
+	y(1) = atan2(sin(y(1)), cos(y(1))); // source: https://medium.com/@mithi/object-tracking-and-fusing-sensor-measurements-using-the-extended-kalman-filter-algorithm-part-1-f2158ef1e4f0
+	/*
 	while (y(1) < -M_PI) { // source: https://stackoverflow.com/questions/1727881/how-to-use-the-pi-constant-in-c
 		y(1) += 2*M_PI;
 		std::cout << "Pi added" << std::endl;
@@ -68,6 +70,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 		y(1) -= 2*M_PI;
 		std::cout << "Pi subtracted" << std::endl;
 	}
+	*/
  
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
