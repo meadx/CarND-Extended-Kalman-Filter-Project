@@ -66,6 +66,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.F_ = MatrixXd(4,4);
     ekf_.Q_ = MatrixXd(4,4);
     ekf_.P_ = MatrixXd(4,4);
+	  
+    // source: https://medium.com/@mithi/object-tracking-and-fusing-sensor-measurements-using-the-extended-kalman-filter-algorithm-part-1-f2158ef1e4f0
     ekf_.P_ << 1, 0, 0, 0,
 	       0, 1, 0, 0,
 	       0, 0, 1000, 0,
