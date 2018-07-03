@@ -1,5 +1,6 @@
 #include "kalman_filter.h"
 #include "tools.h"
+#include "iostream"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -60,10 +61,12 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	// normalize theta in y
 	while (y(1) < -M_PI) { // source: https://stackoverflow.com/questions/1727881/how-to-use-the-pi-constant-in-c
 		y(1) += 2*M_PI;
+		std::cout << "Pi added" << std::endl;
 	}
 
 	while (y(1) > M_PI) {
 		y(1) -= 2*M_PI;
+		std::cout << "Pi subtracted" << std::endl;
 	}
  
 	MatrixXd Ht = H_.transpose();

@@ -58,17 +58,24 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 
 	//check division by zero
 	if (px == 0 && py == 0) {
-		cout << "Errpr: Division by zero in CalculateJacobian()";
+		cout << "Error: Division by zero in CalculateJacobian()";
 		return Hj;
+	}
+	
+	//check if px*px+py*py is close to zero
+	float a = px*px+py*py;
+	if (a < 0.0001) {
+		a = 0.0001;
+		cout << "px*px+py*py close to zero" << endl;
 	}
 
 	// for calculating the Jacobian
-	float h3 = (px*px + py*py)*(px*px + py*py)*(px*px + py*py);
+	// float h3 = a*a*a;
 
 	//compute the Jacobian matrix Hj
-	Hj << (px / sqrt(px*px + py*py)), (py / sqrt(px*px + py*py)), 0, 0,
-		(-py / (px*px + py*py)), (px / (px*px + py*py)), 0, 0,
-		(py*(vx*py - vy*px) / (sqrt(h3))), (px*(vy*px - vx*py) / (sqrt(h3))), (px / sqrt(px*px + py*py)), (py / sqrt(px*px + py*py));
+	Hj << (px / sqrt(a)), (py / sqrt(a)), 0, 0,
+		(-py / a), (px / a), 0, 0,
+		(py*(vx*py - vy*px) / (a*sqrt(a))), (px*(vy*px - vx*py) / (a*sqrt(a))), (px / sqrt(a)), (py / sqrt(a));
 
 	return Hj;
 }
